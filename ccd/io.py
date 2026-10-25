@@ -50,7 +50,7 @@ def pack_markdown(paths: list[Path], title: str) -> Document:
             inferred = _bool_value(meta.get("inferred", "false"), path)
             node = Node(node_id, parent, summary, src, see, inferred, body, "expanded")
             records.append(((ordinal, rel.as_posix()), node))
-    doc = Document(title=title, nodes=_arrange(records))
+    doc = Document(title=title, nodes=_arrange(records), version=2)
     found = problems(doc)
     if found:
         raise CcdError("\n".join(found))
@@ -79,7 +79,7 @@ def pack_json(text: str, title_override: str | None = None) -> Document:
     records: list[tuple[tuple[int, str], Node]] = []
     for index, item in enumerate(items):
         records.append(((index, ""), _node_from_json(item)))
-    doc = Document(title=title, nodes=_arrange(records))
+    doc = Document(title=title, nodes=_arrange(records), version=2)
     found = problems(doc)
     if found:
         raise CcdError("\n".join(found))

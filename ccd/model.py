@@ -16,6 +16,7 @@ SUMMARY_MAX = 200
 TITLE_MAX = 200
 SRC_MAX = 2000
 VERSION = 1
+SUPPORTED_VERSIONS = (1, 2)
 
 
 class CcdError(Exception):
@@ -101,7 +102,7 @@ def build_index(nodes: tuple[Node, ...]) -> tuple[tuple[str, int, str], ...]:
 def problems(doc: Document) -> list[str]:
     """Semantic problems. Empty means the document is safe to trust."""
     errors: list[str] = []
-    if doc.version != VERSION:
+    if doc.version not in SUPPORTED_VERSIONS:
         errors.append(f"unsupported version {doc.version}")
     if doc.title == "" or len(doc.title) > TITLE_MAX or _has_controls(doc.title):
         errors.append(f"title must be 1..{TITLE_MAX} characters on one line")

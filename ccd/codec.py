@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 
+from ccd.compact import decode_v2, encode_v2
 from ccd.model import (
     VERSION,
     ID_RE,
@@ -159,7 +160,12 @@ def _controls(text: str) -> bool:
 
 
 def read_index(text: str) -> tuple[str, int, tuple[tuple[str, int, str], ...]]:
-    """Read only the header index. Does not parse node bodies."""
+    """Read only the header index. Does not parse node bodies.
+
+    A version 2 file is decoded first, so the rows are the plain summaries.
+    """
+    if text.startswith("ccd 2\n"):
+        text = decode_v2(text)
     return _read_header(_Parser(text))
 
 
@@ -202,6 +208,17 @@ def _read_node(parser: _Parser) -> Node:
 
 
 def parse(text: str) -> Document:
+    file_version = VERSION
+    if text.startswith("ccd 2\n"):
+        text = decode_v2(text)
+        file_version = 2
+    doc = _parse_v1(text)
+    if file_version == doc.version:
+        return doc
+    return Document(doc.title, doc.nodes, file_version, doc.index, doc.declared_nodes)
+
+
+def _parse_v1(text: str) -> Document:
     parser = _Parser(text)
     title, declared, index = _read_header(parser)
     nodes: list[Node] = []
@@ -265,10 +282,21 @@ def _body_parts(body: str) -> list[str]:
     return body.split("\n")
 
 
-def render(doc: Document) -> str:
+def render(doc: Document, *, version: int | None = None) -> str:
+    """Render version 1, or version 2 when that encoding is shorter."""
+    chosen = doc.version if version is None else version
+    v1 = _render_v1(doc)
+    if chosen == VERSION:
+        return v1
+    if chosen == 2:
+        return encode_v2(v1)
+    raise CcdError(f"unsupported version {chosen}")
+
+
+def _render_v1(doc: Document) -> str:
     rows = build_index(doc.nodes)
     lines = [
-        f"ccd {doc.version}",
+        "ccd 1",
         f"title: {doc.title}",
         f"nodes: {len(doc.nodes)}",
         "index:",

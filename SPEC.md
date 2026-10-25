@@ -2,13 +2,13 @@
 
 `.ccd` is a plain UTF-8 context file for a strong model. A header index lists every node as `id`, depth, and a one-line summary. The model reads that index and stops. It expands a body only when it needs that id. The file is line-oriented so git diffs stay small.
 
-Version 1 is the only version this document defines. A reader that sees any other version stops. It does not guess.
+Version 1 is the document. Version 2 is a reversible encoding of a version 1 document, chosen so the file costs fewer tokens for a model to read. A reader accepts 1 and 2. Any other version stops. It does not guess.
 
 ## Versioning
 
-The first line is `ccd 1`. The integer is the major version.
+The first line is `ccd 1` or `ccd 2`. The integer is the major version.
 
-- Readers reject a missing version, a minor suffix (`ccd 1.1`), or any major other than 1.
+- Readers reject a missing version, a minor suffix (`ccd 1.1`), or any major other than 1 or 2.
 - Parsers reject unknown fields. A new field is a new major version, so an old reader cannot drop data in silence.
 - Canonical files contain no timestamp, no hash of themselves, and no trailing whitespace on structural lines. Rewriting an unchanged document does not move unrelated lines.
 
@@ -45,6 +45,8 @@ body:
 
 ## Grammar
 
+This grammar is version 1. Version 2 decodes to this text before the checks below run.
+
 ```
 file        = header index node* store?
 header      = "ccd 1" NL "title: " text NL "nodes: " int NL
@@ -78,7 +80,37 @@ The cheap read is the bytes from the start through the `.` that ends the index. 
 
 `fold: expanded` stores the body inline. `fold: collapsed` omits it from the node and keeps it in `store`, in the same order as the collapsed nodes. Collapse does not delete text. `ccd expand FILE ID` prints one node, loading the body from the store when the fold is collapsed. `ccd expand FILE --all -o OUT` and `ccd collapse FILE [ID] -o OUT` rewrite the file. Unpacking always uses the full body.
 
-The canonical pack output is fully expanded and has no `store`. That is the form to commit. Collapse is a reading projection.
+The canonical pack output is fully expanded and has no `store`. Pack writes version 2 when that encoding's token estimate is lower than version 1, and version 1 otherwise. Collapse is a reading projection.
+
+## Version 2
+
+Version 2 is not a second grammar. Decode it and the result is the exact version 1 text, including every default field.
+
+```
+ccd 2
+defaults: inferred=false fold=expanded
+codebook: inline
+¶=<phrase with no newline>
+.
+ccd 1
+...version 1 text, with phrases replaced by their symbols...
+```
+
+`defaults:` is present only when lines that were exactly `inferred: false` or `fold: expanded` were removed. A missing `inferred:` line means false. A missing `fold:` line means expanded. `inferred: true` and `fold: collapsed` stay written out.
+
+`codebook:` is one of:
+
+- `inline`, then one `symbol=phrase` line per entry, then a `.` line. The symbol is one code point. The phrase is the rest of the line and may start with a space. Phrases do not contain a symbol from this book.
+- `-`, then a `.` line, when the only saving is the omitted defaults.
+- `ext:<id>`, then a `.` line. The book is `codebooks/<id>.cb`, one `symbol=phrase` line per entry. `codebooks/relations.cb` maps `because`, `requires`, `derived from`, and `supersedes`. An external book is not in the header, so a model that has only the `.ccd` cannot expand it. Pack does not use an external book. The auto book is inline, so the file decodes from its own header.
+
+The encoder keeps a phrase only when a lower-bound token estimate still falls after paying for the codebook line. The bound is one token per word, one per punctuation run, and one per symbol. Words that are already a single token are not abbreviated. `because` is one of those. Symbols are drawn from a fixed set that cl100k and o200k each encode as one token, skipping any symbol that already occurs in the document.
+
+`outline`, `expand`, `search`, and `validate` decode first. They show plain text. A model that reads the raw file applies the header the same way, then stops at the index.
+
+Version 2 is UTF-8. It is not an ASCII-only encoding. The symbol set is whatever measured shorter on real tokenizers.
+
+`ccd zip` wraps the file bytes with zlib (deflate, RFC 1950). `ccd unzip` inflates them. `--armor` writes `ccd-zip 1` plus base64. Armor is for a text channel. It is larger in tokens than the plain `.ccd`. Zip wins bytes. It is not the form to paste into a prompt.
 
 ## Cross-references and provenance
 
@@ -150,9 +182,12 @@ python -m ccd search <file.ccd> <query>
 python -m ccd validate <file.ccd>...
 python -m ccd unpack <file.ccd> -o <dir>
 python -m ccd unpack <file.ccd> -o <file.json> --json
+python -m ccd zip <file.ccd> -o <file.ccd.zip>
+python -m ccd zip <file.ccd> -o <file.ccd.zz> --armor
+python -m ccd unzip <file.ccd.zip> -o <file.ccd>
 ```
 
-Search is a case-insensitive substring over id text in the hits, plus summary, `src`, and body, including bodies that live in the store. Exit 0 is a hit. Exit 1 is no hit, a validation failure, or an unknown id. Exit 2 is bad usage. There are no third-party dependencies. The library surface is `ccd.parse`, `ccd.render`, `ccd.read_index`, `ccd.pack_markdown`, `ccd.pack_json`, `ccd.unpack_markdown`, `ccd.unpack_json`, `ccd.problems`, `ccd.outline_lines`, `ccd.search_document`, `ccd.collapse_document`, and `ccd.expand_document`.
+Search is a case-insensitive substring over id text in the hits, plus summary, `src`, and body, including bodies that live in the store. Exit 0 is a hit. Exit 1 is no hit, a validation failure, or an unknown id. Exit 2 is bad usage. There are no third-party dependencies. The library surface is `ccd.parse`, `ccd.render`, `ccd.read_index`, `ccd.pack_markdown`, `ccd.pack_json`, `ccd.unpack_markdown`, `ccd.unpack_json`, `ccd.problems`, `ccd.outline_lines`, `ccd.search_document`, `ccd.collapse_document`, `ccd.expand_document`, `ccd.encode_v2`, `ccd.decode_v2`, `ccd.estimate_tokens`, `ccd.zip_text`, and `ccd.unzip_bytes`. Token counts in the comparison notes use tiktoken when it is installed. The encoder itself does not import it.
 
 ## Example
 

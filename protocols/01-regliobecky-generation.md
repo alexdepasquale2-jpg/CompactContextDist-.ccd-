@@ -42,6 +42,8 @@ Write these before you hand off:
 - A handoff packet as [[protocols.handoff]] describes.
 - A run report, markdown and `.ccd`, as in the last section.
 
+Blank forms for these files are in `templates/`. Layouts are in `schematics/`.
+
 ## Steps
 
 The steps run in four phases, in this order: seedinitialization, seedgermination, seedexpansion, sensesprocessing. The phase names and the order are the original intent. [INFERRED] Which existing step sits in which phase is marked on that phase.

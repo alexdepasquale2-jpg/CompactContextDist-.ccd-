@@ -190,8 +190,8 @@ class FormatTests(unittest.TestCase):
             out = Path(tmp) / "docs"
             unpack_markdown(doc, out)
             packed = pack_markdown([out], "Fixture")
-            self.assertEqual(logical(packed), logical(doc))
-            self.assertEqual(render(packed), render(doc))
+            self.assertEqual(logical(packed)[1:], logical(doc)[1:])
+            self.assertEqual(render(packed, version=1), render(doc, version=1))
             second = Path(tmp) / "docs2"
             unpack_markdown(packed, second)
             names = sorted(p.relative_to(out).as_posix() for p in out.rglob("*.md"))

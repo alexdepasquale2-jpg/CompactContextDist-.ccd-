@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 from ccd.codec import parse, render
+from ccd.compact import unzip_bytes, zip_text
 from ccd.io import pack_json, pack_markdown, unpack_json, unpack_markdown
 from ccd.model import CcdError, problems
 from ccd.ops import collapse_document, expand_document, format_expand, outline_lines, search_document
@@ -31,6 +32,10 @@ def main(argv: list[str] | None = None) -> int:
             return _validate(args)
         if command == "unpack":
             return _unpack(args)
+        if command == "zip":
+            return _zip(args)
+        if command == "unzip":
+            return _unzip(args)
         print(f"unhandled command {command}", file=sys.stderr)
         return 2
     except CcdError as exc:
@@ -82,6 +87,15 @@ def _parser() -> argparse.ArgumentParser:
     unpack.add_argument("-o", "--output", required=True)
     unpack.add_argument("--json", action="store_true")
     unpack.add_argument("--force", action="store_true")
+
+    zipping = sub.add_parser("zip", help="deflate a .ccd with zlib; --armor writes ASCII")
+    zipping.add_argument("file")
+    zipping.add_argument("-o", "--output", required=True)
+    zipping.add_argument("--armor", action="store_true")
+
+    unzipping = sub.add_parser("unzip", help="inflate a zlib payload or ccd-zip armor")
+    unzipping.add_argument("file")
+    unzipping.add_argument("-o", "--output", required=True)
     return parser
 
 
@@ -206,4 +220,23 @@ def _unpack(args: argparse.Namespace) -> int:
     else:
         unpack_markdown(doc, dest, force=args.force)
     print(f"unpacked {len(doc.nodes)} nodes to {dest}")
+    return 0
+
+
+def _zip(args: argparse.Namespace) -> int:
+    text = Path(args.file).read_text(encoding="utf-8")
+    payload = zip_text(text, armor=args.armor)
+    dest = Path(args.output)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_bytes(payload)
+    print(f"wrote {dest} ({len(payload)} bytes)")
+    return 0
+
+
+def _unzip(args: argparse.Namespace) -> int:
+    text = unzip_bytes(Path(args.file).read_bytes())
+    dest = Path(args.output)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(text, encoding="utf-8")
+    print(f"wrote {dest}")
     return 0

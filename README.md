@@ -26,17 +26,23 @@ python3 -m ccd pack evidence protocols -o examples/seedforge.ccd --title "Seedfo
 python3 -m ccd validate examples/seedforge.ccd
 ```
 
-`SPEC.md` is the format. `system-prompt.md` is the bot: two modes, plus how any agent should pull and push docs as `.ccd`. The procedures are `protocols/regliobecky-generation.md`, `protocols/lincoln-creation.md`, and `protocols/handoff.md`. The same procedures, trimmed to skill files, are under `skills/`.
+`SPEC.md` is the format. `docs/USING-CCD.md` is the practical guide. `CONNECT.md` is how to attach any agent. `system-prompt.md` is the bot: two modes, plus how any agent should pull and push docs as `.ccd`. The procedures are `protocols/01-regliobecky-generation.md`, `protocols/02-lincoln-creation.md`, and `protocols/03-handoff.md`. The same procedures, trimmed to skill files, are under `skills/`. Blank forms are in `templates/`. Layouts are in `schematics/`.
 
 ## Layout
 
 ```
+CONNECT.md               attach Cursor, Claude, ChatGPT, or a CLI agent
+AGENTS.md                pointer at CONNECT.md
 SPEC.md                  .ccd grammar, commands, versioning
+docs/USING-CCD.md        read, expand, pack, validate, version 2, zip
 system-prompt.md         one bot, two modes
 ccd/                     dependency-free library and CLI
+codebooks/               optional external codebooks
 evidence/                recovered facts, inferences marked
 protocols/               generation, creation, handoff
 skills/                  self-contained skill files
+templates/               blank seed brief, spec, prompt, report, starter .ccd
+schematics/              world spec, asset kit, handoff flow
 sources/                 the notes the evidence was drawn from
 examples/seedforge.ccd   evidence + protocols, packed
 tests/                   pack/unpack round trip and validation

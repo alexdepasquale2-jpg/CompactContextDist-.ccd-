@@ -26,7 +26,7 @@ python -m ccd search <file>.ccd <words>
 python -m ccd validate <file>.ccd
 ```
 
-`outline` does not open bodies. `expand` prints one node, including a body that was collapsed into the store. Prefer expand over pasting a whole `.ccd` into context. Wikilinks look like `[[id]]`. The `see:` field on a node is the cross-reference list. The `src:` field is where the claim came from. `inferred: true` means the node is a synthesis.
+`outline` does not open bodies. `expand` prints one node, including a body that was collapsed into the store. Prefer expand over pasting a whole `.ccd` into context. A version 2 file is a codebook over version 1. These commands decode it before they print. The practical guide is `docs/USING-CCD.md`. Connecting an agent is `CONNECT.md`. Wikilinks look like `[[id]]`. The `see:` field on a node is the cross-reference list. The `src:` field is where the claim came from. `inferred: true` means the node is a synthesis.
 
 There are no dependencies. From this repo, `python -m ccd` is the tool. The format is specified in `SPEC.md`.
 

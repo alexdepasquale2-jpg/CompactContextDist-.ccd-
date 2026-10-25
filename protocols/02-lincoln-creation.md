@@ -42,6 +42,8 @@ For the batch output directory the card names:
 - A headless test for any export or render setting you are about to keep.
 - The run report, markdown and `.ccd`.
 
+Blank forms for the batch prompt, the spec, and the run report are in `templates/`. The kit layout and the handoff flow are in `schematics/`.
+
 ## Toolchain
 
 Install into the workspace, not into a global machine setup. Recovered contents of `/workspace/lincoln`: portable Blender 5.2.2, a uv Python 3.11 venv, CPU torch, torchvision, torchaudio, plus numpy, scipy, and ffmpeg on the audio path.

@@ -1,0 +1,27 @@
+ccd 1
+title: Starter
+nodes: 2
+index:
+report 1 Run record. Fill process, notes, and context.
+report.context 2 Seed, look lock, ids, paths, and the next step.
+.
+node report
+parent: -
+summary: Run record. Fill process, notes, and context.
+src: -
+see: report.context
+inferred: false
+fold: expanded
+body:
+ Replace this node with the run.
+.
+node report.context
+parent: report
+summary: Seed, look lock, ids, paths, and the next step.
+src: -
+see: -
+inferred: false
+fold: expanded
+body:
+ Seed, look lock, and the next build-order step go here.
+.
