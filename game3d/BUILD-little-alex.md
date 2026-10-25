@@ -14,6 +14,23 @@ Per-axis swept AABB against level boxes, skin gap, gravity, jump only when groun
 
 ## M3 — combat
 
-### Hitscan
+### Hitscan — stopped here
 
-`raySlab` against player and level boxes. Pistol `Fire` applies `PistolDamage` to the closest living other player and emits `EventHit`. A level box at equal or nearer t blocks the shot. Not in yet: ammo, swap, rockets, pickups, death, respawn, scoring.
+This branch stops after hitscan. Finish the rest of M3 in the other repo. Do not start a later milestone here.
+
+Done in this tree:
+
+- `raySlab` against player boxes and level boxes.
+- Pistol `Fire` applies `PistolDamage` (20) to the closest other living player and emits `EventHit` (victim, shooter in `Other`, health removed, entry point).
+- A level box at an equal or nearer t blocks the shot.
+- `Events()` is only the last `Step`.
+- `Winner()` signature is unchanged. It already returns the lowest id at `KillLimit`, but nothing awards kills yet.
+
+Still open in M3:
+
+- Ammo and `Swap`. Pistol fire does not spend ammo or cool down.
+- Rockets: swept projectile box and splash.
+- Pickups: respawn timers and the `Active` flag. `stepPickups` is still empty.
+- Death when health reaches 0, kill and death scoring, respawn at `Spawns` after a short delay.
+- `EventKill`, `EventPickup`, and `EventRespawn`. Only `EventHit` is emitted.
+- No RNG is drawn. `NewWorld`'s seed is stored for later use.
