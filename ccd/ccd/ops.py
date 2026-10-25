@@ -206,10 +206,11 @@ def focus_text(
     for node_id in ids:
         if node_id not in by_id:
             raise CcdError(f"unknown id {node_id}")
-    targets = set(ids)
+    printed = _printed_ids(doc, ids, section)
+    targets = set(printed)
     seen: set[str] = set()
     ancestor_ids: list[str] = []
-    for node_id in ids:
+    for node_id in printed:
         chain: list[str] = []
         current = by_id[node_id].parent
         guard: set[str] = set()
@@ -230,9 +231,84 @@ def focus_text(
             f"# {node.id} {depths[node.id]} {estimate_tokens(node.body)} {node.summary}"
         )
     parts = ["\n".join(lines)]
-    for node_id in ids:
-        parts.append(format_expand(by_id[node_id], section=section, budget=budget).rstrip("\n"))
+    sliced = _sliced_ids(doc, ids, section)
+    for node_id in printed:
+        if node_id in sliced:
+            parts.append(format_expand(by_id[node_id], section=section, budget=budget).rstrip("\n"))
+        else:
+            parts.append(format_expand(by_id[node_id], budget=budget).rstrip("\n"))
     return "\n".join(parts) + "\n"
+
+
+def _printed_ids(doc: Document, ids: list[str] | tuple[str, ...], section: str | None) -> list[str]:
+    """Bodies to print. A section missing from the named node is a descendant heading."""
+    if section is None:
+        return list(ids)
+    printed: list[str] = []
+    for node_id in ids:
+        match = _section_match(doc, node_id, section)
+        if match == node_id:
+            printed.append(node_id)
+        else:
+            printed.extend(_self_and_descendants(doc, match))
+    return printed
+
+
+def _sliced_ids(doc: Document, ids: list[str] | tuple[str, ...], section: str | None) -> set[str]:
+    if section is None:
+        return set()
+    return {node_id for node_id in ids if _section_match(doc, node_id, section) == node_id}
+
+
+def _section_match(doc: Document, node_id: str, section: str) -> str:
+    by_id = {node.id: node for node in doc.nodes}
+    try:
+        slice_section(by_id[node_id].body, section)
+    except CcdError:
+        found = _descendant_heading(doc, node_id, section)
+        if found is None:
+            raise
+        return found
+    return node_id
+
+
+def _descendant_heading(doc: Document, node_id: str, section: str) -> str | None:
+    target = section.strip().casefold()
+    children: dict[str, list[str]] = {}
+    for node in doc.nodes:
+        if node.parent is not None:
+            children.setdefault(node.parent, []).append(node.id)
+    stack = list(children.get(node_id, []))
+    while stack:
+        current = stack.pop(0)
+        node = next(item for item in doc.nodes if item.id == current)
+        heading = _first_heading(node.body)
+        if heading is not None and heading.casefold() == target:
+            return current
+        stack.extend(children.get(current, []))
+    return None
+
+
+def _self_and_descendants(doc: Document, node_id: str) -> list[str]:
+    children: dict[str, list[str]] = {}
+    for node in doc.nodes:
+        if node.parent is not None:
+            children.setdefault(node.parent, []).append(node.id)
+    ordered = [node_id]
+    stack = list(children.get(node_id, []))
+    while stack:
+        current = stack.pop(0)
+        ordered.append(current)
+        stack = children.get(current, []) + stack
+    return ordered
+
+
+def _first_heading(body: str) -> str | None:
+    for line in body.split("\n"):
+        match = _HEADING.match(line)
+        if match is not None:
+            return match.group(2).strip()
+    return None
 
 
 def links_lines(doc: Document, node_id: str | None = None) -> str:

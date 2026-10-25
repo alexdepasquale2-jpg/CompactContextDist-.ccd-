@@ -1,6 +1,6 @@
 # <seed name> spec
 
-Delivery spec, <YYYY-MM-DD>. This overrides earlier briefs.
+This file is `reports/<run>/spec.md`. Paths below are inside that run folder. Delivery spec, <YYYY-MM-DD>. This overrides earlier briefs. Engine and dimension come from step 1. Godot 4 and `.glb` only if that step defaulted, and then the line is [INFERRED]. The PS1 budgets are an example profile, not the default. Every budget is stated and justified.
 
 ## 1. Look
 
@@ -38,7 +38,7 @@ Delivery spec, <YYYY-MM-DD>. This overrides earlier briefs.
 
 ## 10. Asset list
 
-The rows live in `docs/asset-list.md`.
+The rows live in `docs/asset-list.md` in this run folder.
 
 | id | name | batch | priority | budget | origin | seed | sockets | notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |

@@ -1,7 +1,7 @@
 ---
 id: protocols.handoff
 parent: protocols
-summary: Handoff packet handoff/<batch>.md with Packet, Question, and Next, plus the condensate. answers: who changes the look lock
+summary: Handoff packet reports/<run>/handoff/<batch>.md with Packet, Question, Next, and the condensate. answers: who changes the look lock
 src: sources/evidence.md | sources/rea-seed-method.md
 see: protocols.regliobecky-generation protocols.lincoln-creation evidence.dawn-whistle evidence.seed-method
 requires: protocols.regliobecky-generation protocols.lincoln-creation
@@ -20,10 +20,10 @@ Source: Alex, 2026-10-25. This is owner-stated original intent for Regliobecky. 
 
 ## The loop
 
-1. A seed arrives as every file in `agents/seed/`. Mode: [[protocols.regliobecky-generation]]. seedinitialization reads that folder first and locks it. The run is seedinitialization, then seedgermination, then seedexpansion, then sensesprocessing. Each phase is transparent and verbose in the report. Output: `spec.md`, `docs/asset-list.md`, prompts, batch cards, `common.md`.
+1. A seed arrives as every file in `agents/seed/` except `README.md` and `.gitkeep`. Those two are folder docs, never part of the seed. Mode: [[protocols.regliobecky-generation]]. seedinitialization reads the seed files first and locks them. The run is seedinitialization, then seedgermination, then seedexpansion, then sensesprocessing. Each phase is transparent and verbose in the report. Output, all inside `reports/<run>/`: `spec.md`, `docs/asset-list.md`, `docs/prompts/`, `docs/batches/`, `common.md`, `handoff/`.
 2. The first build-order step that needs assets becomes a batch card. Mode: [[protocols.lincoln-creation]]. It reads `common.md` first and builds P0 rows.
 3. A kit that passes the creation protocol's finished checklist is the quality bar named on the next card.
-4. A coding agent receives `docs/promptN.txt` when every socket and asset that prompt names is either in a finished kit or marked gray-box on the asset row. The vertical slice is allowed to start on gray-box. Polish is not.
+4. A coding agent receives `docs/prompts/promptN.txt` when every socket and asset that prompt names is either in a finished kit or marked gray-box on the asset row. The vertical slice is allowed to start on gray-box. Polish is not. The prompt's assets are in that batch or an earlier one. A later batch is a Question, not a silent handoff.
 5. If verify fails because the script is wrong, Lincoln fixes the script and regenerates. If verify fails because the spec is wrong, Lincoln stops. Regliobecky revises the spec, dates the change, and says it overrides the previous brief. Then the batch is cut again.
 6. Both modes write a three-part markdown report before the other mode starts.
 
@@ -31,7 +31,7 @@ Source: Alex, 2026-10-25. This is owner-stated original intent for Regliobecky. 
 
 ## The packet
 
-Write `handoff/<batch>.md` with three headings:
+Write `reports/<run>/handoff/<batch>.md` with three headings:
 
 - `Packet` — one screen: seed number, spec path, look-lock paragraph, delivery tuple, reference kit path, row ids, prompt path, output directory, shared props not to rebuild.
 - `Question` — empty if there is no question. If Lincoln is sending a conflict back, this section is the conflict and nothing else.
@@ -94,33 +94,34 @@ The flow is one direction. You can return to step 3 when verify says the spec is
 
 ## Reports
 
-Both protocols end the same way. The folder `reports/<run-id>/` holds:
+Both protocols end the same way. The folder `reports/<run-id>/` holds the run. These are the files:
 
-| Id | What "full" means |
+| File | What "full" means |
 | --- | --- |
-| `report.process` | Steps in order, files written, commands, exit codes. Skipped steps say why. |
-| `report.notes` | Creative decisions, rejected alternatives, every [INFERRED] mark, lineage, questions. |
-| `report.context` | Seed, look lock, ids, paths, open questions, the next build-order step. |
+| `01-process.md` | Steps in order, files written, commands, exit codes. Skipped steps say why. |
+| `02-notes.md` | Creative decisions, rejected alternatives, every [INFERRED] mark, lineage, questions. |
+| `03-context.md` | Seed, look lock, ids, paths, open questions, the next build-order step. |
 
-The next mode starts by reading `reports/<run-id>/03-context.md`, then `handoff/<batch>.md` if a packet exists. It does not start by rereading the whole spec if the context file names the sections that changed. If `run.ccd` is present and the CCD tool runs, follow Optional: CCD instead of opening the whole files.
+When a run is packed, `01-process.md` is the CCD node `report.process`, `02-notes.md` is `report.notes`, and `03-context.md` is `report.context`.
+
+The next mode starts by reading `reports/<run-id>/03-context.md`, then `reports/<run-id>/handoff/<batch>.md` if a packet exists. It does not start by rereading the whole spec if the context file names the sections that changed. If `run.ccd` is present and the CCD tool runs, follow Optional: CCD instead of opening the whole files.
 
 ## Optional: CCD
 
 The markdown report is the source of truth. This step is optional. If `python3 -m ccd` is missing or fails, skip it silently and keep going.
 
-At the end of a Regliobecky run, and at the end of each Lincoln batch, when the tool is available:
+Pack only after the final append to `01-process.md`, `02-notes.md`, `03-context.md`, and `handoff/<batch>.md`. `run.ccd` is the very last file written. Do not append after the pack. A later edit is not in the pack.
+
+At the end of a Regliobecky run, and at the end of each Lincoln batch, when the tool is available, pack the spec first if it is there, then the run folder:
 
 ```bash
+python3 -m ccd pack reports/<run-id>/spec.md -o reports/<run-id>/spec.ccd --title "<seed> spec"
+python3 -m ccd validate reports/<run-id>/spec.ccd
 python3 -m ccd pack reports/<run-id> -o reports/<run-id>/run.ccd --title "<run-id>"
 python3 -m ccd validate reports/<run-id>/run.ccd
 ```
 
-When `spec.md` is in the run, you may also pack it. Skip this if the pack fails:
-
-```bash
-python3 -m ccd pack spec.md -o spec.ccd --title "<seed> spec"
-python3 -m ccd validate spec.ccd
-```
+Skip a pack that fails. The second command is last. `python3 -m ccd` runs from the repo root.
 
 The next mode, when `run.ccd` exists and the tool is available, loads only the nodes `03-context.md` names. It does not reread the whole report or the whole spec.
 
@@ -133,7 +134,7 @@ python3 -m ccd focus reports/<run-id>/run.ccd report.context
 For each spec heading named in that context, when `spec.ccd` exists:
 
 ```bash
-python3 -m ccd focus spec.ccd spec --section "<heading>"
+python3 -m ccd focus reports/<run-id>/spec.ccd spec --section "<heading>"
 ```
 
-Still read `handoff/<batch>.md`. If `run.ccd` or the tool is absent, read `reports/<run-id>/03-context.md` and `handoff/<batch>.md` as the start step already says.
+That focus returns the named section, not the rest of the spec. Still read `handoff/<batch>.md` inside the run folder. If `run.ccd` or the tool is absent, read `reports/<run-id>/03-context.md` and `reports/<run-id>/handoff/<batch>.md` as the start step already says.

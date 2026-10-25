@@ -193,14 +193,17 @@ class HandoffTests(unittest.TestCase):
             self.assertLess(after, before)
             self.assertLess(after * 5, before)
 
-    def test_dated_report_folder_without_ids_is_rejected(self) -> None:
+    def test_dated_report_folder_without_ids_uses_the_filename(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             report = Path(tmp) / "2026-10-25-fog-bell"
             report.mkdir()
-            (report / "notes.md").write_text("A note with no id.\n", encoding="utf-8")
-            packed = run("pack", str(report), "-o", str(Path(tmp) / "run.ccd"), "--title", "bad")
-            self.assertEqual(packed.returncode, 1)
-            self.assertIn("invalid path segment", packed.stderr)
+            (report / "notes.md").write_text("# Note\n\nA note with no id.\n", encoding="utf-8")
+            dest = Path(tmp) / "run.ccd"
+            packed = run("pack", str(report), "-o", str(dest), "--title", "fog")
+            self.assertEqual(packed.returncode, 0, packed.stderr)
+            text = dest.read_text(encoding="utf-8")
+            self.assertIn("\nnode notes\n", text)
+            self.assertNotIn("invalid path segment", packed.stderr)
 
 
 if __name__ == "__main__":

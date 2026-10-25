@@ -20,11 +20,11 @@ Do not invent exporter patch code, a measured bake time, or a library the notes 
 
 ## Inputs
 
-You need all of these. If one is missing, stop and name it. Do not guess the look lock.
+You need all of these, from the run folder `reports/<run-id>/`. If one is missing, stop and name it. Do not guess the look lock. Run artifacts stay in that folder. The repo root stays clean.
 
 - `spec.md` §1–2 (look), §9 (build order), §10 (asset list), §11 (delivery).
-- The batch card, the row ids, and the build prompt those rows serve.
-- The seed image named on the card.
+- The batch card `docs/batches/<name>.md`, the row ids, and `docs/prompts/promptN.txt` those rows serve.
+- The seed image named on the card. `seeds/NN` is a label for a file in `agents/seed/`, sorted by filename. No `seeds/` folder is created. `README.md` and `.gitkeep` in `agents/seed/` are folder docs, never part of the seed.
 - `common.md`.
 - The reference kit's contact sheet, once one exists.
 
@@ -55,9 +55,13 @@ If a tool is not local and open-source, do not use it. No hosted generators. No 
 
 ## Steps
 
+These numbers are the only Lincoln list. The skill and the system prompt use the same numbers.
+
+Report files are `01-process.md`, `02-notes.md`, and `03-context.md`. When a run is packed, those files are the CCD nodes `report.process`, `report.notes`, and `report.context`. Protocol text uses the filenames.
+
 ### 0. Open the run record
 
-Create `reports/<YYYY-MM-DD>-<batch>/` the same way the generation protocol does: `report`, `report.process`, `report.notes`, `report.context`. Append as you go.
+Create `reports/<YYYY-MM-DD>-<batch>/` with `_index.md` (`id: report`), `01-process.md`, `02-notes.md`, and `03-context.md`. Append to `01-process.md` as you go. This batch's report folder is its own run folder. Do not write kits or notes at the repo root.
 
 Copy into `03-context.md` the batch name, the row ids, the seed number, the look lock, the delivery tuple, and the reference kit path. You will build against that copy. If the spec changes mid-batch, stop and ask for a new card.
 
@@ -88,13 +92,13 @@ Generate by script. Do not hand-edit a mesh and call it done. A hand edit that i
 
 ### 4. Hit the budgets and the look lock
 
-From the spec, not from memory. Under the recovered PS1 lock: 300–900 triangles, 64–128 px, vertex-lit, no normal maps, chunky silhouettes that match the named seed. [INFERRED] Point-sampled textures, if §2 says so.
+From the spec, not from memory. Use the budgets §2 states, each of which was justified when the spec was written. The recovered PS1 numbers (300–900 triangles, 64–128 px, vertex-lit, no normal maps, chunky silhouettes that match the named seed) apply only when §2 says that example profile is in force. [INFERRED] Point-sampled textures, if §2 says so.
 
 If a model needs more triangles to match the seed's silhouette, do not quietly exceed the budget. Stop and ask. The look lock and §10 are both the designer's. You do not pick a winner.
 
 ### 5. Export with the delivery tuple
 
-Use §11 as written. For the recovered 3D default that means FBX only, Y-up, 1 unit = 1 m, pivot at the feet, scale 1.0, forward = Unity +Z (model facing Blender −Y), `axis_forward='-Z'`, `axis_up='Y'`, `bake_space_transform=True`, `add_leaf_bones=False`, `mesh_smooth_type='FACE'`, `colors_type='SRGB'`.
+Use §11 as written. If §11 is the recovered Unity example, that means FBX only, Y-up, 1 unit = 1 m, pivot at the feet, scale 1.0, forward = Unity +Z (model facing Blender −Y), `axis_forward='-Z'`, `axis_up='Y'`, `bake_space_transform=True`, `add_leaf_bones=False`, `mesh_smooth_type='FACE'`, `colors_type='SRGB'`. If §11 says Godot 4 and `.glb`, export that, and do not apply the Unity flags.
 
 Recovered fact: `beastlib.py` carried two FBX exporter patches for nested children. The patch text was not recovered. [INFERRED] The practice to copy is: if the exporter breaks nested child transforms, patch it inside the script, restore the scene after the export, and keep the headless round-trip that proves the children survive. Do not leave the scene dirty. Do not invent a patch you have not tested.
 
@@ -114,9 +118,9 @@ The shared README format was not recovered. [INFERRED] Use this, so every batch 
 
 ```
 # <batch name>
-Seed: seeds/NN
+Seed: seeds/NN (a label, not a folder)
 Rows: <ids>
-Prompt: docs/promptN.txt
+Prompt: docs/prompts/promptN.txt
 Regenerate: ./make_<kit>.sh
 Budgets: <tris>, <texture size>
 Delivery: <one line from §11>
@@ -161,8 +165,10 @@ Recovered: local open-source tools only; the Blender 5.2.2 and uv Python 3.11 to
 
 ## Close: write the run report
 
-- `report.process` — commands run, in order, with the test results and the verify exit code. Include the headless test names and what they checked.
-- `report.notes` — where the silhouette was hard to hit, what you refused to hand-edit, every [INFERRED] tool choice, and any question sent back to the designer.
-- `report.context` — the batch card, the rows you built, the rows you did not, the seed, the reference kit, the output paths, and whether the kit is finished by the checklist in step 9.
+- `01-process.md` — commands run, in order, with the test results and the verify exit code. Include the headless test names and what they checked.
+- `02-notes.md` — where the silhouette was hard to hit, what you refused to hand-edit, every [INFERRED] tool choice, and any question sent back to the designer.
+- `03-context.md` — the batch card, the rows you built, the rows you did not, the seed label, the reference kit, the output paths, and whether the kit is finished by the checklist in step 9.
 
-The markdown folder is the report. The next agent reads `03-context.md` first. Optional CCD packing, when the tool is present, is in [[protocols.handoff]]. If the tool is absent, skip it.
+When a run is packed, `01-process.md` is the CCD node `report.process`, `02-notes.md` is `report.notes`, and `03-context.md` is `report.context`.
+
+The markdown folder is the report. The next agent reads `03-context.md` first. Optional CCD packing, when the tool is present, is in [[protocols.handoff]]. Pack `run.ccd` only after the final append. If the tool is absent, skip it.

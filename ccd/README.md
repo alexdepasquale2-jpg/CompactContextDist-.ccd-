@@ -2,7 +2,7 @@
 
 Compact Context Distributable. A plain-text file with an index, so a model loads a map and one body instead of a whole document.
 
-Run this from this directory. Python 3.11 or newer. No third-party packages.
+Python 3.11 or newer. No third-party packages. From this directory, or from the repo root, `python3 -m ccd` is the same tool. No install. A plain markdown file with no CCD frontmatter is packed into one node per `##` and `###` heading, so `focus --section` returns that section.
 
 ```bash
 python3 -m unittest discover -s tests -v

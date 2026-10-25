@@ -1,6 +1,6 @@
 # Using .ccd
 
-Python 3.11 or newer, from this directory (`ccd/`). `python3 -m ccd` needs no packages. The grammar is `SPEC.md`.
+Python 3.11 or newer. `python3 -m ccd` needs no packages and no install. It works in this directory (`ccd/`) and from the repo root (the repo root then uses paths like `ccd/examples/seedforge.ccd`). The grammar is `SPEC.md`. Packing a plain markdown file that has no `id:` frontmatter splits `##` and `###` headings into nodes. `focus <file> <id> --section "<heading>"` then returns that section, including its `###` children, and not the neighboring sections.
 
 `examples/seedforge.ccd` is `../agents/evidence` and `../agents/protocols` packed as version 3.
 

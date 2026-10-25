@@ -16,17 +16,17 @@ One mode, instead of the whole bot:
 - A seed and no spec: Regliobecky.
 - A spec and a batch card: Lincoln.
 - Both: Regliobecky first. Stop at the handoff packet.
-- If `handoff/<batch>.md` has a Next heading that names a mode, use that.
+- If `reports/<run>/handoff/<batch>.md` has a Next heading that names a mode, use that.
 
-The seed is every file in `seed/`. seedinitialization reads that folder first. Blank forms are in `templates/`. Layouts are in `schematics/`. A sample run is `TESTING.md`.
+Read every file in `seed/` except `README.md` and `.gitkeep`. Those two are folder docs, never part of the seed. seedinitialization reads the other files first. Blank forms are in `templates/`. Layouts are in `schematics/`. A sample run is `TESTING.md`.
 
 ## 3. Read the seed
 
-List `seed/`. Images (png, jpg, webp) are look and sense references. Text (txt, md) is intent, lore, and constraints. Any other file is extra context. If the folder is empty, ask for the seed. Do not grow a world from nothing.
+List `seed/` and skip `README.md` and `.gitkeep`. Images (png, jpg, jpeg, webp) are look and sense references. Text (txt, md) is intent, lore, and constraints. Any other file is extra context. If nothing remains, ask for the seed. Do not grow a world from nothing.
 
 ## 4. Write a report
 
-Create `reports/<YYYY-MM-DD>-<slug>/` with `01-process.md`, `02-notes.md`, and `03-context.md`. Append as you go. Regliobecky's order is seedinitialization, seedgermination, seedexpansion, sensesprocessing. Lincoln runs after that, one batch at a time.
+Create `reports/<YYYY-MM-DD>-<slug>/` with `01-process.md`, `02-notes.md`, and `03-context.md`. The spec, `common.md`, `docs/`, and `handoff/` go in that same folder. The repo root stays clean. Append as you go. Regliobecky's order is seedinitialization, seedgermination, seedexpansion, sensesprocessing, using the step numbers in `protocols/01-regliobecky-generation.md`. Lincoln runs after that, one batch at a time, using the step numbers in `protocols/02-lincoln-creation.md`.
 
 Leave the folder for the next agent. They read `03-context.md` first.
 
