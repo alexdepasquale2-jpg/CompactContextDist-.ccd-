@@ -1,0 +1,12 @@
+**sim contract changes vs Arnold's stub** (all additive; Winner() unchanged)
+- `Player.OnGround bool` — renderer can drive jump/land anims without re-testing collision.
+- `Level.Pickups []Pickup` — pickup spawn spots live in level data; World copies them at NewWorld.
+- `World.KillLimit int` (default 10, 0 = off) — Winner() needs a target; exported so the menu can set it.
+- `Tick = 1/60` const — one Step = one tick; matches your fixed-step accumulator.
+- `MoveSpeed 6, Gravity 20, JumpSpeed 7, MaxFall 50, PlayerW 0.6, PlayerH 1.8, MaxHealth 100` — tunables in one place.
+- `SampleLevel() Level` — shared test/demo arena (floor, walls, crate, overhang).
+- `Vec3.Add/Sub/Scale/Len` — tiny helpers in mathx.go; tell me if yours has different names and I'll match.
+- `Event{Kind, Tick, Player, Other, Amount, Weapon, Pos}`, `EventHit/Kill/Pickup/Respawn` — Other = -1 when no attacker.
+- Conventions: Pos = feet center; yaw 0 faces +Z; Move.Z forward, Move.X + = right (fixes stub strafe sign).
+- Collision: per-axis swept AABB (X, Y, Z), no tunneling; hits: ray test for hitscan, swept box for projectiles (M3).
+- Step: players missing from the map get zero Input; Players() returns a copy sorted by ID.
