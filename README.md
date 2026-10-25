@@ -1,55 +1,28 @@
-# Seedforge
+## QUICKSTART
 
-CompactContextDist (`.ccd`). Two former agents, one system, and a context file format.
-
-**Regliobecky** turns a seed into a spec: a look lock, a build order, and an asset list. **Lincoln** builds one batch against that spec with local open-source tools, a regenerate script, and a verify gate. A finished kit is the quality bar for the next batch. The facts this is built from are in `evidence/`. Inferences are marked in the protocols.
-
-`.ccd` (Compact Context Distributable) is a plain-text file an agent can skim. The top of the file is an index of ids and one-line summaries. Bodies stay folded until something asks for that id.
-
-## Quickstart
-
-Python 3.11 or newer. No packages to install.
-
-```bash
-python3 -m ccd validate examples/seedforge.ccd
-python3 -m ccd outline examples/seedforge.ccd -d 1
-python3 -m ccd expand examples/seedforge.ccd protocols.handoff
-python3 -m ccd search examples/seedforge.ccd "verify_kit"
-python3 -m ccd unpack examples/seedforge.ccd -o /tmp/seedforge-docs
-python3 -m unittest discover -s tests -v
-```
-
-Pack a folder of markdown back into a `.ccd`:
-
-```bash
-python3 -m ccd pack evidence protocols -o examples/seedforge.ccd --title "Seedforge"
-python3 -m ccd validate examples/seedforge.ccd
-```
-
-`SPEC.md` is the format. `docs/USING-CCD.md` is the practical guide. `CONNECT.md` is how to attach any agent. `system-prompt.md` is the bot: two modes, plus how any agent should pull and push docs as `.ccd`. The procedures are `protocols/01-regliobecky-generation.md`, `protocols/02-lincoln-creation.md`, and `protocols/03-handoff.md`. The same procedures, trimmed to skill files, are under `skills/`. Blank forms are in `templates/`. Layouts are in `schematics/`.
-
-## Layout
+Paste this into any CLI or chat agent (Cursor, Claude Code, Codex, ChatGPT, Grok, or another). It sets the agent up, then tells you how to run.
 
 ```
-CONNECT.md               attach Cursor, Claude, ChatGPT, or a CLI agent
-AGENTS.md                pointer at CONNECT.md
-SPEC.md                  .ccd grammar, commands, versioning
-docs/USING-CCD.md        read, expand, pack, validate, version 2, zip
-system-prompt.md         one bot, two modes
-ccd/                     dependency-free library and CLI
-codebooks/               optional external codebooks
-evidence/                recovered facts, inferences marked
-protocols/               generation, creation, handoff
-skills/                  self-contained skill files
-templates/               blank seed brief, spec, prompt, report, starter .ccd
-schematics/              world spec, asset kit, handoff flow
-sources/                 the notes the evidence was drawn from
-examples/seedforge.ccd   evidence + protocols, packed
-tests/                   pack/unpack round trip and validation
+You are setting up Seedforge. Repo: https://github.com/alexdepasquale2-jpg/CompactContextDist-.ccd- . Do this setup, then stop and explain. Do not start a design or a build yet.
+
+If you can read files and run commands: clone that URL when the working tree does not already contain agents/system-prompt.md. Load agents/system-prompt.md as your instructions. Read and keep both skills: agents/skills/regliobecky-generation/SKILL.md (Regliobecky Generation: seed to spec) and agents/skills/lincoln-creation/SKILL.md (Lincoln Creation: one batch to a kit). List every file in agents/seed/. That folder is the locked seed. Read all of it before any later phase. Images (png, jpg, webp) are look and sense references. Text (txt, md) is intent, lore, and constraints. Any other file is extra context: note the name and what you can observe, and do not ignore it. If agents/seed/ has no dropped files (only README.md and .gitkeep), say it is empty and ask for the seed.
+
+If you cannot read the repo: say so. Ask the user to paste agents/system-prompt.md and both skill files, and to paste or attach every file that belongs in agents/seed/. Treat those attachments as the locked seed with the same image, text, and other rules. Do not invent a seed.
+
+Then tell the user, in a few lines:
+- Regliobecky when they have a seed and no spec. Lincoln when they have a spec and a batch card. If both, Regliobecky first, then stop at the handoff.
+- Initialize a run as reports/<YYYY-MM-DD>-<slug>/ with 01-process.md, 02-notes.md, and 03-context.md. Append as you go.
+- Regliobecky order: seedinitialization, then seedgermination, then seedexpansion, then sensesprocessing. Lincoln runs after that, one batch at a time.
+- Reports are written in that reports folder. The handoff is handoff/<batch>.md with headings Packet, Question, and Next.
+- A sample seed and the checklist are in agents/TESTING.md.
 ```
 
-A run of either mode writes `reports/<run-id>/` (process, creative notes, context) and packs `reports/<run-id>.ccd`.
+# CompactContextDist
 
-## License
+Two trees in one repo.
 
-No license has been chosen. This note is a placeholder, not a grant of rights. Pick a license before distributing the project.
+`agents/` is Seedforge. It is the system prompt, both skills, the protocols, and the seed drop folder. Copy that directory out on its own. `agents/TESTING.md` is how you test it. Reports are markdown. Nothing in `agents/` imports or requires the format tools.
+
+`ccd/` is the Compact Context Distributable format and its command-line tool. It may read `agents/` as example content (`ccd/examples/seedforge.ccd` is `agents/evidence` and `agents/protocols` packed). The cheap read is map, then find, then focus. Run it from that directory. See `ccd/README.md`.
+
+The link is one way. The format can use the agents as a sample. The agents do not call the format.

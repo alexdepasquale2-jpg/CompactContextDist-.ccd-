@@ -5,3 +5,7 @@ __pycache__/
 dist/
 build/
 uploads/
+agents/seed/*
+!agents/seed/README.md
+!agents/seed/.gitkeep
+
