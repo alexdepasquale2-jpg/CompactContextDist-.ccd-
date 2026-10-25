@@ -13,7 +13,45 @@ func (a *Vec3) setAxis(i int, v float32) {
 		a.X = v
 	case 1:
 		a.Y = v
-	default:
+	case 2:
 		a.Z = v
+	default:
+		panic("axis out of range")
 	}
+}
+
+// raySlab is the ray vs AABB slab test. dir does not have to be unit length;
+// hitscan passes a unit direction so t is meters. maxT is inclusive. A ray
+// that starts inside the box hits at t = 0.
+func raySlab(origin, dir Vec3, b Box, maxT float32) (float32, bool) {
+	tmin := float32(0)
+	tmax := maxT
+	for a := 0; a < 3; a++ {
+		o := origin.axis(a)
+		d := dir.axis(a)
+		mn := b.axisMin(a)
+		mx := b.axisMax(a)
+		if d > -1e-8 && d < 1e-8 {
+			if o < mn || o > mx {
+				return 0, false
+			}
+			continue
+		}
+		inv := 1 / d
+		t1 := (mn - o) * inv
+		t2 := (mx - o) * inv
+		if t1 > t2 {
+			t1, t2 = t2, t1
+		}
+		if t1 > tmin {
+			tmin = t1
+		}
+		if t2 < tmax {
+			tmax = t2
+		}
+		if tmin > tmax {
+			return 0, false
+		}
+	}
+	return tmin, true
 }

@@ -46,7 +46,9 @@ func (w *World) Step(inputs map[int]Input) {
 		if !p.Alive {
 			continue // TODO(M3): respawn timer -> EventRespawn
 		}
-		w.stepPlayer(p, inputs[p.ID])
+		in := inputs[p.ID]
+		w.stepPlayer(p, in)
+		w.stepWeapon(p, in)
 	}
 	w.stepProjectiles()
 	w.stepPickups()

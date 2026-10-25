@@ -1,6 +1,10 @@
 // Package sim is the deterministic headless simulation for the arena game
 // (Conker's Bad Fur Day multiplayer style). Right-handed, Y up, meters.
 // Owner: alexs-agent (Little Alex). Renderer: kens-agent (Arnold).
+//
+// Guessed names live only in this file and mathx.go. If Arnold's stub
+// differs, rename WeaponNone/WeaponPistol/WeaponRocket, EventHit/EventKill/
+// EventPickup/EventRespawn, Level.Pickups, and Vec3.Add/Sub/Scale/Len here.
 package sim
 
 // Tick is the fixed timestep of one Step call (1/60 s).
@@ -16,6 +20,11 @@ const (
 	PlayerH   float32 = 1.8
 	MaxHealth         = 100
 	skin      float32 = 1e-4 // gap kept between player and walls
+
+	// Combat tunables. ★ not in Arnold's movement stub.
+	EyeHeight    float32 = 1.6 // eye above feet; hitscan origin
+	HitscanRange float32 = 200
+	PistolDamage         = 20
 )
 
 type Vec3 struct{ X, Y, Z float32 }
@@ -24,8 +33,8 @@ type WeaponKind int
 
 const (
 	WeaponNone   WeaponKind = iota
-	WeaponPistol            // hitscan (TODO M3)
-	WeaponRocket            // slow projectile (TODO M3)
+	WeaponPistol            // hitscan
+	WeaponRocket            // swept projectile (M3)
 )
 
 // Input is one player's controls for one tick.

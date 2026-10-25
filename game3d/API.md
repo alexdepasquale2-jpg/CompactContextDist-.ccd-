@@ -4,6 +4,7 @@
 const Tick float32 = 1.0/60.0                       // ★
 const MoveSpeed=6, Gravity=20, JumpSpeed=7, MaxFall=50 // ★ float32 tunables
 const PlayerW=0.6, PlayerH=1.8; const MaxHealth=100 // ★ (box size was prose)
+const EyeHeight=1.6, HitscanRange=200, PistolDamage=20 // ★ hitscan
 type Vec3 struct{ X, Y, Z float32 }
 func (Vec3) Add(Vec3) Vec3; Sub(Vec3) Vec3; Scale(float32) Vec3; Len() float32 // ★ mathx.go (yours may differ)
 type WeaponKind int; const WeaponNone, WeaponPistol, WeaponRocket WeaponKind // ★ names guessed
@@ -26,3 +27,5 @@ func (w *World) Projectiles() []Projectile; Pickups() []Pickup; Level() Level
 func (w *World) Events() []Event                    // last Step only, copy
 func (w *World) Winner() (id int, done bool)        // unchanged
 ```
+
+Hitscan (pistol): origin is feet + (0, EyeHeight, 0). Direction is yaw/pitch (yaw 0 = +Z, positive pitch = up). Slab test against every other living player box and every level box. Closest hit wins; a level box at the same t as a player blocks the shot. EventHit carries the victim, the shooter in Other, Amount = health actually removed, WeaponPistol, and the entry point. One pistol hit does not kill. Ammo, swap, rockets, pickups, death, and respawn are still open. Events() is cleared at the start of the next Step.
