@@ -102,4 +102,38 @@ Both protocols end the same way. The folder `reports/<run-id>/` holds:
 | `report.notes` | Creative decisions, rejected alternatives, every [INFERRED] mark, lineage, questions. |
 | `report.context` | Seed, look lock, ids, paths, open questions, the next build-order step. |
 
-The next mode starts by reading `reports/<run-id>/03-context.md`, then `handoff/<batch>.md` if a packet exists. It does not start by rereading the whole spec if the context file names the sections that changed.
+The next mode starts by reading `reports/<run-id>/03-context.md`, then `handoff/<batch>.md` if a packet exists. It does not start by rereading the whole spec if the context file names the sections that changed. If `run.ccd` is present and the CCD tool runs, follow Optional: CCD instead of opening the whole files.
+
+## Optional: CCD
+
+The markdown report is the source of truth. This step is optional. If `python3 -m ccd` is missing or fails, skip it silently and keep going.
+
+At the end of a Regliobecky run, and at the end of each Lincoln batch, when the tool is available:
+
+```bash
+python3 -m ccd pack reports/<run-id> -o reports/<run-id>/run.ccd --title "<run-id>"
+python3 -m ccd validate reports/<run-id>/run.ccd
+```
+
+When `spec.md` is in the run, you may also pack it. Skip this if the pack fails:
+
+```bash
+python3 -m ccd pack spec.md -o spec.ccd --title "<seed> spec"
+python3 -m ccd validate spec.ccd
+```
+
+The next mode, when `run.ccd` exists and the tool is available, loads only the nodes `03-context.md` names. It does not reread the whole report or the whole spec.
+
+```bash
+python3 -m ccd map reports/<run-id>/run.ccd
+python3 -m ccd find reports/<run-id>/run.ccd "context"
+python3 -m ccd focus reports/<run-id>/run.ccd report.context
+```
+
+For each spec heading named in that context, when `spec.ccd` exists:
+
+```bash
+python3 -m ccd focus spec.ccd spec --section "<heading>"
+```
+
+Still read `handoff/<batch>.md`. If `run.ccd` or the tool is absent, read `reports/<run-id>/03-context.md` and `handoff/<batch>.md` as the start step already says.

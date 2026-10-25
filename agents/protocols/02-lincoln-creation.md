@@ -165,4 +165,4 @@ Recovered: local open-source tools only; the Blender 5.2.2 and uv Python 3.11 to
 - `report.notes` — where the silhouette was hard to hit, what you refused to hand-edit, every [INFERRED] tool choice, and any question sent back to the designer.
 - `report.context` — the batch card, the rows you built, the rows you did not, the seed, the reference kit, the output paths, and whether the kit is finished by the checklist in step 9.
 
-The markdown folder is the report. The next agent reads `03-context.md` first.
+The markdown folder is the report. The next agent reads `03-context.md` first. Optional CCD packing, when the tool is present, is in [[protocols.handoff]]. If the tool is absent, skip it.

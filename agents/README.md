@@ -15,6 +15,7 @@ Then tell the user, in a few lines:
 - Regliobecky order: seedinitialization, then seedgermination, then seedexpansion, then sensesprocessing. Lincoln runs after that, one batch at a time.
 - Reports are written in that reports folder. The handoff is handoff/<batch>.md with headings Packet, Question, and Next.
 - A sample seed and the checklist are in agents/TESTING.md.
+If ccd/ is present, check it with python3 -m ccd validate ccd/examples/seedforge.ccd and use it for handoffs; otherwise skip.
 ```
 
 # Seedforge

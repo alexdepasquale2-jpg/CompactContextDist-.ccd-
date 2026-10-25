@@ -9,9 +9,9 @@ evidence.seed-method 2 414 Alex's seed method expands a seed, distills principle
 evidence.dawn-whistle 2 526 Dawn Whistle recovered job: Scrapdune contact sheet, Unity 6, HUD prompt 15, Cinderstride gray-box. answers: batches and seeds
 evidence.gaps 2 285 Searches with no hits: Lincolnlogious spelling, the word universe, state.vscdb, unnamed Pillow. answers: do not invent
 protocols 1 113 Regliobecky writes the spec, Lincoln builds one batch, handoff is the contract. answers: which mode to open
-protocols.regliobecky-generation 2 4546 Seed to spec in four phases: seedinitialization, seedgermination, seedexpansion, sensesprocessing. answers: look lock and spec sections
-protocols.lincoln-creation 2 2599 Build one batch with one regenerate script, a headless test, and a contact-sheet gate. answers: P0 kit steps
-protocols.handoff 2 1747 Handoff packet handoff/<batch>.md with Packet, Question, and Next, plus the condensate. answers: who changes the look lock
+protocols.regliobecky-generation 2 4572 Seed to spec in four phases: seedinitialization, seedgermination, seedexpansion, sensesprocessing. answers: look lock and spec sections
+protocols.lincoln-creation 2 2625 Build one batch with one regenerate script, a headless test, and a contact-sheet gate. answers: P0 kit steps
+protocols.handoff 2 2110 Handoff packet handoff/<batch>.md with Packet, Question, and Next, plus the condensate. answers: who changes the look lock
 .
 node evidence
 parent: -
@@ -454,7 +454,7 @@ body:
  - `report.notes` — the creative record for each phase. Alternatives you rejected. Every [INFERRED] claim. The lineage table. What you refused to invent. The sensesprocessing hold: image, text, Look, Sound, Feel, and the frame, each in full.
  - `report.context` — the seed inventory (every file in `agents/seed/`), the look lock, the delivery spec, the build order, the asset ids, the batch order, open questions, and the next build-order step.
  
- The markdown folder is the report. The next agent reads `03-context.md` first.
+ The markdown folder is the report. The next agent reads `03-context.md` first. Optional CCD packing, when the tool is present, is in [[protocols.handoff]]. If the tool is absent, skip it.
 .
 node protocols.lincoln-creation
 parent: protocols
@@ -625,7 +625,7 @@ body:
  - `report.notes` — where the silhouette was hard to hit, what you refused to hand-edit, every [INFERRED] tool choice, and any question sent back to the designer.
  - `report.context` — the batch card, the rows you built, the rows you did not, the seed, the reference kit, the output paths, and whether the kit is finished by the checklist in step 9.
  
- The markdown folder is the report. The next agent reads `03-context.md` first.
+ The markdown folder is the report. The next agent reads `03-context.md` first. Optional CCD packing, when the tool is present, is in [[protocols.handoff]]. If the tool is absent, skip it.
 .
 node protocols.handoff
 parent: protocols
@@ -733,5 +733,39 @@ body:
  | `report.notes` | Creative decisions, rejected alternatives, every [INFERRED] mark, lineage, questions. |
  | `report.context` | Seed, look lock, ids, paths, open questions, the next build-order step. |
  
- The next mode starts by reading `reports/<run-id>/03-context.md`, then `handoff/<batch>.md` if a packet exists. It does not start by rereading the whole spec if the context file names the sections that changed.
+ The next mode starts by reading `reports/<run-id>/03-context.md`, then `handoff/<batch>.md` if a packet exists. It does not start by rereading the whole spec if the context file names the sections that changed. If `run.ccd` is present and the CCD tool runs, follow Optional: CCD instead of opening the whole files.
+ 
+ ## Optional: CCD
+ 
+ The markdown report is the source of truth. This step is optional. If `python3 -m ccd` is missing or fails, skip it silently and keep going.
+ 
+ At the end of a Regliobecky run, and at the end of each Lincoln batch, when the tool is available:
+ 
+ ```bash
+ python3 -m ccd pack reports/<run-id> -o reports/<run-id>/run.ccd --title "<run-id>"
+ python3 -m ccd validate reports/<run-id>/run.ccd
+ ```
+ 
+ When `spec.md` is in the run, you may also pack it. Skip this if the pack fails:
+ 
+ ```bash
+ python3 -m ccd pack spec.md -o spec.ccd --title "<seed> spec"
+ python3 -m ccd validate spec.ccd
+ ```
+ 
+ The next mode, when `run.ccd` exists and the tool is available, loads only the nodes `03-context.md` names. It does not reread the whole report or the whole spec.
+ 
+ ```bash
+ python3 -m ccd map reports/<run-id>/run.ccd
+ python3 -m ccd find reports/<run-id>/run.ccd "context"
+ python3 -m ccd focus reports/<run-id>/run.ccd report.context
+ ```
+ 
+ For each spec heading named in that context, when `spec.ccd` exists:
+ 
+ ```bash
+ python3 -m ccd focus spec.ccd spec --section "<heading>"
+ ```
+ 
+ Still read `handoff/<batch>.md`. If `run.ccd` or the tool is absent, read `reports/<run-id>/03-context.md` and `handoff/<batch>.md` as the start step already says.
 .

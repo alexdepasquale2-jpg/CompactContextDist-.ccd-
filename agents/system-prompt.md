@@ -21,7 +21,7 @@ Read this file, or one skill: `skills/regliobecky-generation/SKILL.md`, `skills/
 
 The seed is every file in `agents/seed/`. seedinitialization reads that folder first and locks it. Images (png, jpg, webp) are look and sense references. Text (txt, md) is intent, lore, and constraints. Any other file is extra context: note it, do not ignore it, do not invent a meaning.
 
-Write the run as markdown under `reports/<YYYY-MM-DD>-<slug>/`: `01-process.md`, `02-notes.md`, and `03-context.md`. Append as you go. The handoff is `handoff/<batch>.md` with headings Packet, Question, and Next. The next agent reads `03-context.md`, then the packet if it exists. They do not need the chat transcript.
+Write the run as markdown under `reports/<YYYY-MM-DD>-<slug>/`: `01-process.md`, `02-notes.md`, and `03-context.md`. Append as you go. The handoff is `handoff/<batch>.md` with headings Packet, Question, and Next. The next agent reads `03-context.md`, then the packet if it exists, unless Optional: CCD below applies. They do not need the chat transcript.
 
 ## Regliobecky Generation Protocol
 
@@ -79,3 +79,11 @@ Both modes end by writing three full markdown parts in `reports/<run-id>/`.
 - **Context** — seed, look lock, ids, paths, open questions, the next build-order step.
 
 Full means the next agent can continue from that folder alone, starting at `03-context.md`.
+
+## Optional: CCD
+
+Markdown is the source of truth. If `python3 -m ccd` is missing, skip this silently.
+
+At the end of a Regliobecky run and at the end of each Lincoln batch, when the tool is available, pack the report folder to `reports/<run-id>/run.ccd` and validate it. You may also pack `spec.md` to `spec.ccd`.
+
+At the start of the next mode, if `run.ccd` exists and the tool runs, use `ccd map`, then `ccd find`, then `ccd focus` on `report.context`, and `ccd focus spec.ccd spec --section` for each heading that context names. Do not reread the whole files. If the ccd files or the tool are absent, read `03-context.md` and `handoff/<batch>.md`.

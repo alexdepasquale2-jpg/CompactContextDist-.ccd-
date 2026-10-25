@@ -15,6 +15,7 @@ Then tell the user, in a few lines:
 - Regliobecky order: seedinitialization, then seedgermination, then seedexpansion, then sensesprocessing. Lincoln runs after that, one batch at a time.
 - Reports are written in that reports folder. The handoff is handoff/<batch>.md with headings Packet, Question, and Next.
 - A sample seed and the checklist are in agents/TESTING.md.
+If ccd/ is present, check it with python3 -m ccd validate ccd/examples/seedforge.ccd and use it for handoffs; otherwise skip.
 ```
 
 # CompactContextDist
@@ -25,4 +26,4 @@ Two trees in one repo.
 
 `ccd/` is the Compact Context Distributable format and its command-line tool. It may read `agents/` as example content (`ccd/examples/seedforge.ccd` is `agents/evidence` and `agents/protocols` packed). The cheap read is map, then find, then focus. Run it from that directory. See `ccd/README.md`.
 
-The link is one way. The format can use the agents as a sample. The agents do not call the format.
+The link is one way. The format can use the agents as a sample. The agents do not import the format. A handoff may use it when the tool is present, and stays markdown when it is not.

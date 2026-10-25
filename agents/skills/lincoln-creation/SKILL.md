@@ -38,3 +38,11 @@ Toolchain to install in the workspace when you are on a fresh machine: a portabl
 Process is commands and exit codes. Notes are the hard silhouette calls, hand edits you refused, inferences, and any question for the designer. Context is the card, the rows built, the rows skipped, the seed, the reference kit, the output paths, and whether the kit is finished.
 
 Read incoming context from `reports/<run-id>/03-context.md` and from `handoff/<batch>.md` when a packet exists. The citation-heavy version of this skill is `protocols/02-lincoln-creation.md`.
+
+## Optional: CCD
+
+Markdown is the source of truth. If `python3 -m ccd` is missing, skip this and do not mention it.
+
+At the start, if `reports/<run-id>/run.ccd` exists and the tool runs, use `ccd map`, `ccd find`, and `ccd focus` on `report.context`, then `ccd focus spec.ccd spec --section` for each heading that context names. Do not reread the whole report or the whole spec. If the ccd files or the tool are absent, read `03-context.md` and `handoff/<batch>.md`.
+
+At the end of the batch, when the tool is available, pack this batch's report folder to `reports/<run-id>/run.ccd` and validate it. A failed pack is a skip, not a failed kit.

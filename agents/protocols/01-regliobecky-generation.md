@@ -260,4 +260,4 @@ Fill the three nodes you opened in step 0. Full means the next agent can continu
 - `report.notes` — the creative record for each phase. Alternatives you rejected. Every [INFERRED] claim. The lineage table. What you refused to invent. The sensesprocessing hold: image, text, Look, Sound, Feel, and the frame, each in full.
 - `report.context` — the seed inventory (every file in `agents/seed/`), the look lock, the delivery spec, the build order, the asset ids, the batch order, open questions, and the next build-order step.
 
-The markdown folder is the report. The next agent reads `03-context.md` first.
+The markdown folder is the report. The next agent reads `03-context.md` first. Optional CCD packing, when the tool is present, is in [[protocols.handoff]]. If the tool is absent, skip it.

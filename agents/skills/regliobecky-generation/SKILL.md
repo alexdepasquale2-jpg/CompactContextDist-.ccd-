@@ -53,3 +53,9 @@ Mark any guess [INFERRED]. Do not invent facts about the seed. Do not copy asset
 Each phase is transparent and verbose. Fill process (the four phases in order, steps, and files), notes (rejections, inferences, lineage, and the sensesprocessing hold in full), and context (seed inventory from `agents/seed/`, look lock, delivery spec, build order, ids, next step). [INFERRED] A phase reduced to a status line does not meet the original intent.
 
 The long form is `protocols/01-regliobecky-generation.md`. Facts are in `evidence/`.
+
+## Optional: CCD
+
+Markdown is the source of truth. If `python3 -m ccd` is missing, skip this and do not mention it.
+
+At the end of the run, when the tool is available, pack `reports/<run-id>/` to `reports/<run-id>/run.ccd` and validate it. You may also pack `spec.md` to `spec.ccd`. The next mode, when those files exist, runs `ccd map`, `ccd find`, and `ccd focus` on `report.context` and on each spec heading the context names. Otherwise it reads `03-context.md` and `handoff/<batch>.md`.

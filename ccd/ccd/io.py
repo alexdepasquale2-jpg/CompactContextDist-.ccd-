@@ -47,16 +47,26 @@ def pack_markdown(paths: list[Path], title: str) -> Document:
         if root.is_file():
             files = [root]
             base = root.parent
-            input_name = _segment(root.stem, root)
+            input_name: str | None = _segment(root.stem, root)
         else:
             files = sorted(root.rglob("*.md"), key=lambda path: path.relative_to(root).as_posix())
             base = root
-            input_name = _segment(root.name, root)
+            # Report folders are named 2026-10-25-slug, which is not an id.
+            # The directory name is only a prefix for files that omit id.
+            input_name = None
         for path in files:
             rel = path.relative_to(base)
             text = path.read_text(encoding="utf-8")
             meta, body = _split_frontmatter(text, path)
-            node_id = meta.get("id") or _default_id(input_name, rel, path)
+            explicit = meta.get("id")
+            if explicit:
+                node_id = explicit
+            else:
+                if input_name is None:
+                    input_name = _segment(root.name, root)
+                node_id = _default_id(
+                    input_name, rel, path, single_file=root.is_file()
+                )
             if not ID_RE.match(node_id):
                 raise CcdError(f"{path}: invalid id {node_id}")
             if "parent" in meta:
@@ -333,7 +343,10 @@ def _derive_summary(body: str, path: Path) -> str:
     return text
 
 
-def _default_id(input_name: str, rel: Path, path: Path) -> str:
+def _default_id(input_name: str, rel: Path, path: Path, *, single_file: bool = False) -> str:
+    # A lone file is one root node. Its id is the stem, not stem.stem.
+    if single_file:
+        return _segment(rel.stem, path)
     parts = [input_name]
     if str(rel.parent) != ".":
         for part in rel.parent.parts:
