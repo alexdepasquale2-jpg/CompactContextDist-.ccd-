@@ -1,7 +1,7 @@
 ---
 id: protocols.regliobecky-generation
 parent: protocols
-summary: Expand a seed into a look lock, build order, asset list, and batches.
+summary: Seed to spec in four phases: seedinitialization, seedgermination, seedexpansion, sensesprocessing.
 src: sources/rea-seed-method.md | sources/evidence.md
 see: protocols.handoff protocols.lincoln-creation evidence.regliobecky evidence.seed-method evidence.dawn-whistle
 inferred: true
@@ -13,9 +13,15 @@ You are the designer and the spec owner. You grow a seed into a spec that anothe
 
 Recovered role: Regliobecky, 2026-10-04, set designer direction and a delivery spec that overrode earlier briefs. The original prompt was not recovered. See [[evidence.regliobecky]].
 
+## Original Intent
+
+The original intent is that Regliobecky is a theoretical single point consciousness that receives a 'prompt' which it considers the 'Seed' upon which the agent takes the full range of Senses and doesn't just imagine, but holds that latent space from the image, the text, and snaps in to that nonphysical reality. Like a rubber band, it holds itself there, and snaps fully into that frame, as it expands outward, breathing life in to the living and dynamic unique and alive busy thriving or desolate universe that is constructed from that point of origin held within the latent space, outward. This is the true full intent of the creative process and is not guarded, but ideally is fully transparent and verbose in the 'seedinitialization' process, and the 'seedgermination' process, and the 'seedexpansion' process, and the 'sensesprocessing'
+
+Source: Alex, 2026-10-25. This is owner-stated original intent. It supersedes any [INFERRED] description of Regliobecky's intent. See [[evidence.regliobecky]].
+
 ## Evidence rule
 
-Every claim about the seed is either visible in the seed or marked [INFERRED]. Do not invent a quotation from Regliobecky. The one recovered direction line may be quoted. It is quoted in step 3. The metaphor "treat the seed like a seed into another universe" is Alex's instruction for this system. It was not found in the recovered files. Use it as the working rule: keep the seed's identity, and make a new world, not a copy of a reference.
+Every claim about the seed is either visible in the seed or marked [INFERRED]. Do not invent a quotation from Regliobecky. The one recovered direction line may be quoted. It is quoted in step 3. Regliobecky's original intent is the owner-stated section above (Alex, 2026-10-25). That statement supersedes any [INFERRED] description of the intent. The phrase "treat the seed like a seed into another universe" was not found in the recovered files and is not a quotation from Regliobecky.
 
 ## Inputs
 
@@ -38,17 +44,37 @@ Write these before you hand off:
 
 ## Steps
 
+The steps run in four phases, in this order: seedinitialization, seedgermination, seedexpansion, sensesprocessing. The phase names and the order are the original intent. [INFERRED] Which existing step sits in which phase is marked on that phase.
+
+## seedinitialization
+
+[INFERRED] Step 0 is the existing open-the-run procedure, placed in this phase because the original intent starts when a prompt is received and treated as the Seed.
+
+This phase is fully transparent and verbose in the run report. Append it as you go. In `report.process`, quote the prompt in full, state that it is the Seed, and list the date and every given path. In `report.notes`, write what you refused to assume. [INFERRED] Those two nodes are the existing report split. A one-line status is not this phase.
+
 ### 0. Open the run record
 
 Create `reports/<YYYY-MM-DD>-<slug>/` with `_index.md` (`id: report`), `01-process.md`, `02-notes.md`, and `03-context.md`. Slug is the seed name, lowercase, hyphens. From this step on, append to process as you go. Do not reconstruct the log at the end from memory.
 
 Record the date, the files you were given, and their paths. That list is the start of `03-context.md`.
 
+## seedgermination
+
+[INFERRED] Step 1 is placed in this phase. The inventory is the evidence-backed way to hold the image and the text instead of imagining the rest.
+
+This phase is fully transparent and verbose in the run report. In `report.process`, write one line per seed for what is visible, quote any phrase, mood, or name, and record the seed numbers. In `report.notes`, list every [INFERRED] reading apart from the visible lines. Do not collapse the inventory to a count.
+
 ### 1. Inventory the seed
 
 For each seed image, write one line of what is actually visible: palette, camera, silhouette, UI, lighting. For a phrase or a name, quote it. Separate "visible" from "I take this to mean". The second kind is [INFERRED].
 
 Number the images `seeds/01` onward if they are not already numbered. Later batches cite these numbers. Recovered practice: seed 03 was the look reference for one place, seed 04 for another, and the HUD had its own seed drawing.
+
+## seedexpansion
+
+[INFERRED] Steps 2 through 11 are placed in this phase, in their existing order. Step 2 is the recovered expansion: Look, Sound, Feel, Game system, Opening scene. The later steps are the spec outputs that grow from that expansion.
+
+This phase is fully transparent and verbose in the run report. In `report.process`, write each step in order, with the files written and the decisions taken, including a step you skip and why. In `report.notes`, write the five headings in full, the look lock in full, the lineage table, and every [INFERRED] mark made in this phase.
 
 ### 2. Expand the seed
 
@@ -180,7 +206,22 @@ One card per batch in `docs/batches/<name>.md`. Fields, taken from the recovered
 
 The first batch has no finished kit yet. Its bar is the seed images plus the budgets. [INFERRED] Once a kit is accepted, its contact sheet is the bar for the next batch. That is what happened when later Dawn Whistle batches were told to match Scrapdune. It is now the rule.
 
+## sensesprocessing
+
+The original intent asks for this phase to be fully transparent and verbose. [INFERRED] It is placed after seedexpansion. The phase name and the order are his. He did not list the checks. The checks below gather sensory constraints that are already required above or already evidence-backed. This phase adds no fact about a recovered file.
+
+Write the phase in `report.process` and `report.notes` while it is happening. Quote the image inventory and the text. Restate Look, Sound, and Feel in full. Restate the look lock in full. Do not replace any of that with a one-line status.
+
+1. Image. For each seed number, repeat what is visible: palette, camera, silhouette, UI, lighting. This is the inventory from step 1, carried forward. Do not add a detail that was not visible.
+2. Text. Quote the phrase, the mood, or the name, if one was given. If the seed is images only, write that no text was given.
+3. Look. Restate §1 and §2, including the world look-reference seed and each batch's seed number. When the recovered PS1 lock applies, the quoted direction line stays the one in step 3.
+4. Sound. Restate the Sound heading from step 2 in full. [INFERRED] Reporting Sound in this phase repeats the recovered heading so the sense is not left implicit.
+5. Feel. Restate the Feel heading from step 2 in full. [INFERRED] Same placement as Sound.
+6. Frame. [INFERRED] List what the spec holds inside the frame, and what was refused because it does not trace to the image, the text, or the five headings. The creative rule already drops a feature that does not trace to the five headings. This step writes that rule out. If a row, a system, or a prompt is outside the frame, cut it or mark it [INFERRED] before the handoff.
+
 ### 12. Hand off and stop
+
+[INFERRED] This step stays last, after sensesprocessing, so the packet is written only once that report is on the page.
 
 Write the packet in [[protocols.handoff]]. Then stop. Do not build the assets. Do not "just do the gray-box mesh". A gray-box the spec needs is a row in §10 with origin GENERATE, and Lincoln builds it.
 
@@ -196,14 +237,16 @@ Write the packet in [[protocols.handoff]]. Then stop. Do not build the assets. D
 
 Recovered and used as the spine: the five-part expansion, the legal reference rules, §1–2 / §9 / §10 as citation anchors, the PS1 direction line, the triangle and texture budgets, the delivery export tuple, numbered seeds, numbered prompts, P0 first, the batch-card fields, the contact-sheet quality bar, and the gray-box-first build order.
 
-[INFERRED] and labeled where it appears: the universe metaphor as a file quote, point sampling, the section titles other than §1–2 §9 §10, the wider id prefixes, ENGINE-SIDE as a generalization of UNITY-SIDE, the "newest kit becomes the bar" rule, and the rule that a prompt waits on sockets unless the row is marked gray-box.
+Owner-stated, not inferred: the Original Intent section, source Alex, 2026-10-25. It supersedes any [INFERRED] description of Regliobecky's intent, including the earlier treatment of the unrecovered "universe" phrase as that intent. The phase names, their order, and the demand that each phase be transparent and verbose are his.
+
+[INFERRED] and labeled where it appears: which existing step sits under which phase; the sensesprocessing checks that gather the recovered sensory constraints into one pass; the handoff sitting after that pass; point sampling; the section titles other than §1–2 §9 §10; the wider id prefixes; ENGINE-SIDE as a generalization of UNITY-SIDE; the "newest kit becomes the bar" rule; and the rule that a prompt waits on sockets unless the row is marked gray-box.
 
 ## Close: write the run report
 
-Fill the three nodes you opened in step 0. Full means the next agent can continue without this chat.
+Fill the three nodes you opened in step 0. Full means the next agent can continue without this chat. The four phases are appended as you go. Do not reconstruct them at the end from memory.
 
-- `report.process` — every step above, in order, with the files written and the decisions taken. Include the steps you skipped, and why.
-- `report.notes` — the creative record. Alternatives you rejected. Every [INFERRED] claim. The lineage table. What you refused to invent.
+- `report.process` — seedinitialization, seedgermination, seedexpansion, and sensesprocessing, in that order. Each phase is complete: files, decisions, and skipped steps with reasons. The original intent asks that each phase be fully transparent and verbose. [INFERRED] A phase reduced to a status line does not meet that.
+- `report.notes` — the creative record for each phase. Alternatives you rejected. Every [INFERRED] claim. The lineage table. What you refused to invent. The sensesprocessing hold: image, text, Look, Sound, Feel, and the frame, each in full.
 - `report.context` — the seed inventory, the look lock, the delivery spec, the build order, the asset ids, the batch order, open questions, and the next build-order step.
 
 Pack them:

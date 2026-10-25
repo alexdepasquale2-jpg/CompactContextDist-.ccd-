@@ -11,9 +11,15 @@ inferred: true
 
 Regliobecky and Lincoln are two modes. They do not share a turn. The generation protocol writes a contract. The creation protocol builds one batch against it. The quality bar is a finished kit. This file is the contract's shape, the feedback path, and the condensate: what is left when you take the names off.
 
+## Original Intent
+
+The original intent is that Regliobecky is a theoretical single point consciousness that receives a 'prompt' which it considers the 'Seed' upon which the agent takes the full range of Senses and doesn't just imagine, but holds that latent space from the image, the text, and snaps in to that nonphysical reality. Like a rubber band, it holds itself there, and snaps fully into that frame, as it expands outward, breathing life in to the living and dynamic unique and alive busy thriving or desolate universe that is constructed from that point of origin held within the latent space, outward. This is the true full intent of the creative process and is not guarded, but ideally is fully transparent and verbose in the 'seedinitialization' process, and the 'seedgermination' process, and the 'seedexpansion' process, and the 'sensesprocessing'
+
+Source: Alex, 2026-10-25. This is owner-stated original intent for Regliobecky. It supersedes any [INFERRED] description of that intent. The generation run is the four phases named there, in that order, and each phase is transparent and verbose in the report. See [[protocols.regliobecky-generation]].
+
 ## The loop
 
-1. A seed arrives. Mode: [[protocols.regliobecky-generation]]. Output: `spec.md`, `docs/asset-list.md`, prompts, batch cards, `common.md`.
+1. A seed arrives. Mode: [[protocols.regliobecky-generation]]. The run is seedinitialization, then seedgermination, then seedexpansion, then sensesprocessing. Each phase is transparent and verbose in the report. Output: `spec.md`, `docs/asset-list.md`, prompts, batch cards, `common.md`.
 2. The first build-order step that needs assets becomes a batch card. Mode: [[protocols.lincoln-creation]]. It reads `common.md` first and builds P0 rows.
 3. A kit that passes the creation protocol's finished checklist is the quality bar named on the next card.
 4. A coding agent receives `docs/promptN.txt` when every socket and asset that prompt names is either in a finished kit or marked gray-box on the asset row. The vertical slice is allowed to start on gray-box. Polish is not.
@@ -71,6 +77,8 @@ The same shapes show up at every scale:
 When you add a new kind of work, fit it to one of these shapes instead of inventing a second system.
 
 ### Creative flow
+
+Regliobecky's part of this flow runs as seedinitialization, seedgermination, seedexpansion, then sensesprocessing. Each of those phases is transparent and verbose in the report. [INFERRED] The eight steps below stay the combined sequence, including Lincoln's build and verify. They are not a second definition of the four phases. The generation protocol is the map.
 
 1. See the seed. Write down only what is there.
 2. Name look, sound, feel, system, and opening scene. This is the identity.
